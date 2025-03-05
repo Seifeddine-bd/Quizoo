@@ -1,10 +1,11 @@
-// com/seifeddine/bd/quizoo/ui/fragments/CategoriesFragment.java
 package com.seifeddine.bd.quizoo.ui.fragments;
 
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.TextView;
 
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -18,22 +19,20 @@ import com.seifeddine.bd.quizoo.data.repository.QuizRepository;
 import com.seifeddine.bd.quizoo.ui.activities.QuizActivity;
 import com.seifeddine.bd.quizoo.ui.adapters.CategoryAdapter;
 
+import java.util.List;
+
 public class CategoriesFragment extends Fragment {
+    private static final String TAG = "CategoriesFragment";
     private QuizRepository repository;
     private CategoryAdapter adapter;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_categories, container, false);
+        TextView statusText = view.findViewById(R.id.status_text);
         RecyclerView recyclerView = view.findViewById(R.id.category_list);
-
         recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
-        adapter =  new CategoryAdapter(new CategoryAdapter.OnCategoryClickListener() {
-            @Override
-            public void onClick(Category category) {
-                QuizActivity.start(getContext(), category.getId());
-            }
-        });
+        adapter = new CategoryAdapter(category -> QuizActivity.start(getContext(), category.getId()));
         recyclerView.setAdapter(adapter);
 
         repository = new QuizRepository(
@@ -42,8 +41,25 @@ public class CategoriesFragment extends Fragment {
                 AppDatabase.getDatabase(getContext()).analyticsDao(),
                 RetrofitClient.getApiService()
         );
-        repository.syncData();
-        repository.getCategories().observe(getViewLifecycleOwner(), categories -> adapter.setCategories(categories));
+
+        // Show loading state
+        statusText.setText("Loading categories...");
+        statusText.setVisibility(View.VISIBLE);
+        recyclerView.setVisibility(View.GONE);
+
+        // Watch for category updates
+        repository.getCategories().observe(getViewLifecycleOwner(), categories -> {
+            Log.d(TAG, "Categories from LiveData: " + (categories != null ? categories.size() : "null"));
+            if (categories != null && !categories.isEmpty()) {
+                adapter.setCategories(categories);
+                statusText.setVisibility(View.GONE);
+                recyclerView.setVisibility(View.VISIBLE);
+            } else {
+                statusText.setText("No categories available");
+                statusText.setVisibility(View.VISIBLE);
+                recyclerView.setVisibility(View.GONE);
+            }
+        });
 
         return view;
     }

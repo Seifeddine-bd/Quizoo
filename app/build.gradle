@@ -48,62 +48,53 @@ android {
 
 dependencies {
 
+    dependencies {
+        // AndroidX Core and AppCompat
+        implementation 'androidx.core:core-ktx:1.12.0'
+        implementation 'androidx.appcompat:appcompat:1.6.1'
+        implementation 'androidx.cardview:cardview:1.0.0'
+        implementation libs.androidx.constraintlayout
 
-    implementation 'androidx.core:core:1.12.0'
-    implementation 'androidx.appcompat:appcompat:1.6.1'
-    implementation 'androidx.activity:activity-compose:1.8.0'
-    implementation 'androidx.compose.ui:ui:1.5.0'
-    implementation 'androidx.compose.material3:material3:1.2.0'
-    implementation 'androidx.lifecycle:lifecycle-viewmodel-compose:2.6.1'
-    implementation 'androidx.lifecycle:lifecycle-livedata:2.6.1'
-    implementation 'androidx.room:room-runtime:2.6.1'
-    implementation libs.androidx.storage
-    implementation libs.material
-    implementation libs.androidx.activity
-    implementation libs.androidx.constraintlayout
-    annotationProcessor 'androidx.room:room-compiler:2.6.1'
-    implementation 'androidx.room:room-ktx:2.6.1'  // For coroutines interop
-    implementation 'com.squareup.retrofit2:retrofit:2.9.0'
-    implementation 'com.squareup.retrofit2:converter-gson:2.9.0'
-    implementation 'com.google.code.gson:gson:2.10.1'
-    implementation 'org.jetbrains.kotlinx:kotlinx-coroutines-android:1.7.3'
+        // Jetpack Compose
+        implementation 'androidx.activity:activity-compose:1.8.0'
+        implementation 'androidx.compose.ui:ui:1.5.0'
+        implementation 'androidx.compose.material3:material3:1.2.0'
+        implementation 'androidx.lifecycle:lifecycle-viewmodel-compose:2.6.1'
+        implementation platform(libs.androidx.compose.bom)
+        implementation libs.androidx.ui
+        implementation libs.androidx.ui.graphics
+        implementation libs.androidx.ui.tooling.preview
+        debugImplementation libs.androidx.ui.tooling
+        debugImplementation libs.androidx.ui.test.manifest
 
-    implementation 'androidx.compose.material3:material3:1.2.0'
-    // Jetpack Compose
-    //implementation "androidx.activity:activity-compose:1.8.0"
-    //implementation "androidx.compose.ui:ui:1.5.0"
-    //implementation "androidx.compose.material3:material3:1.2.0"
-    //implementation "androidx.lifecycle:lifecycle-viewmodel-compose:2.6.1"
+        // Lifecycle
+        implementation 'androidx.lifecycle:lifecycle-livedata:2.6.1'
+        implementation libs.androidx.lifecycle.runtime.ktx
 
-    // Room
-    //implementation "androidx.room:room-runtime:2.6.1"
-    //implementation libs.androidx.storage
-    //annotationProcessor "androidx.room:room-compiler:2.6.1"
-    //implementation "androidx.room:room-ktx:2.6.1"  // For coroutines support
+        // Room
+        implementation 'androidx.room:room-runtime:2.6.1'
+        implementation 'androidx.room:room-ktx:2.6.1'
+        annotationProcessor 'androidx.room:room-compiler:2.6.1'
 
-    // Retrofit
-    //implementation "com.squareup.retrofit2:retrofit:2.9.0"
-    //implementation "com.squareup.retrofit2:converter-gson:2.9.0"
+        // Retrofit and Gson
+        implementation 'com.squareup.retrofit2:retrofit:2.9.0'
+        implementation 'com.squareup.retrofit2:converter-gson:2.9.0'
+        implementation 'com.google.code.gson:gson:2.10.1'
 
-    // Coroutines (for async operations)
-    //implementation "org.jetbrains.kotlinx:kotlinx-coroutines-android:1.7.3"
+        // Coroutines
+        implementation 'org.jetbrains.kotlinx:kotlinx-coroutines-android:1.7.3'
 
-    // Gson for JSON conversion
-    //implementation "com.google.code.gson:gson:2.10.1"
+        // Material Design
+        implementation libs.material
 
-    implementation libs.androidx.core.ktx
-    implementation libs.androidx.lifecycle.runtime.ktx
-    implementation libs.androidx.activity.compose
-    implementation platform(libs.androidx.compose.bom)
-    implementation libs.androidx.ui
-    implementation libs.androidx.ui.graphics
-    implementation libs.androidx.ui.tooling.preview
-    implementation libs.androidx.material3
-    testImplementation libs.junit
-    androidTestImplementation libs.androidx.junit
-    androidTestImplementation libs.androidx.espresso.core
-    androidTestImplementation platform(libs.androidx.compose.bom)
-    androidTestImplementation libs.androidx.ui.test.junit4
-    debugImplementation libs.androidx.ui.tooling
-    debugImplementation libs.androidx.ui.test.manifest
+        // Storage
+        implementation libs.androidx.storage
+
+        // Testing
+        testImplementation libs.junit
+        androidTestImplementation libs.androidx.junit
+        androidTestImplementation libs.androidx.espresso.core
+        androidTestImplementation platform(libs.androidx.compose.bom)
+        androidTestImplementation libs.androidx.ui.test.junit4
+    }
 }

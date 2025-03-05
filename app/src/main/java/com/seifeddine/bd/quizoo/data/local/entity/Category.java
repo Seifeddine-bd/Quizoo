@@ -1,4 +1,3 @@
-// com/seifeddine/bd/quizoo/data/local/entity/Category.java
 package com.seifeddine.bd.quizoo.data.local.entity;
 
 import androidx.room.Entity;

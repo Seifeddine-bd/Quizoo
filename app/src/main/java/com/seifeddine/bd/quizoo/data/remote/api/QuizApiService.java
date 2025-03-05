@@ -10,15 +10,11 @@ import retrofit2.Call;
 import retrofit2.http.Body;
 import retrofit2.http.GET;
 import retrofit2.http.POST;
+import retrofit2.Call;
+import retrofit2.http.Body;
+import retrofit2.http.POST;
 
-// QuizApiService.java
 public interface QuizApiService {
-    @GET("quizzes")
-    Call<List<NetworkQuiz>> getQuizzes();
-
-    @GET("categories")
-    Call<List<NetworkCategory>> getCategories();
-
-    @POST("analytics")
-    Call<Void> submitAnalytics(@Body AnalyticsRequest analytics);
+    @POST("submit-analytics")
+    Call<Void> submitAnalytics(@Body AnalyticsRequest analyticsRequest);
 }

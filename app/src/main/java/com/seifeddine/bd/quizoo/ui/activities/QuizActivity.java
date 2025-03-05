@@ -1,21 +1,21 @@
 package com.seifeddine.bd.quizoo.ui.activities;
 
-import com.seifeddine.bd.quizoo.data.local.AppDatabase;
-
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.fragment.app.Fragment;
 
 import com.seifeddine.bd.quizoo.R;
+import com.seifeddine.bd.quizoo.data.local.AppDatabase;
 import com.seifeddine.bd.quizoo.data.remote.RetrofitClient;
 import com.seifeddine.bd.quizoo.data.repository.QuizRepository;
+import com.seifeddine.bd.quizoo.ui.fragments.CategoriesFragment;
 import com.seifeddine.bd.quizoo.ui.fragments.QuizFragment;
 
 public class QuizActivity extends AppCompatActivity {
     private QuizRepository repository;
-    private int categoryId;
 
     public static void start(Context context, int categoryId) {
         Intent intent = new Intent(context, QuizActivity.class);
@@ -26,9 +26,8 @@ public class QuizActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_quiz);
+        setContentView(R.layout.activity_main);
 
-        categoryId = getIntent().getIntExtra("categoryId", 0);
         repository = new QuizRepository(
                 AppDatabase.getDatabase(this).quizDao(),
                 AppDatabase.getDatabase(this).categoryDao(),
@@ -37,9 +36,16 @@ public class QuizActivity extends AppCompatActivity {
         );
 
         if (savedInstanceState == null) {
-            getSupportFragmentManager().beginTransaction()
-                    .replace(R.id.fragment_container, new QuizFragment(categoryId, repository))
-                    .commit();
+            int categoryId = getIntent().getIntExtra("categoryId", -1);
+            if (categoryId != -1) {
+                getSupportFragmentManager().beginTransaction()
+                        .replace(R.id.fragment_container, new QuizFragment(categoryId))
+                        .commit();
+            } else {
+                getSupportFragmentManager().beginTransaction()
+                        .replace(R.id.fragment_container, new CategoriesFragment())
+                        .commit();
+            }
         }
     }
 }

@@ -1,6 +1,7 @@
 package com.seifeddine.bd.quizoo.ui.fragments;
 
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -14,18 +15,23 @@ import android.widget.Toast;
 import androidx.fragment.app.Fragment;
 
 import com.seifeddine.bd.quizoo.R;
+import com.seifeddine.bd.quizoo.data.local.AppDatabase;
 import com.seifeddine.bd.quizoo.data.local.entity.Quiz;
-import com.seifeddine.bd.quizoo.data.remote.dto.AnalyticsRequest;
+import com.seifeddine.bd.quizoo.data.remote.RetrofitClient;
 import com.seifeddine.bd.quizoo.data.repository.QuizRepository;
+import com.seifeddine.bd.quizoo.data.remote.dto.AnalyticsRequest;
+
+import java.util.List;
+
 public class QuizFragment extends Fragment {
-    private final int categoryId;
-    private final QuizRepository repository;
+    private static final String TAG = "QuizFragment";
+    private QuizRepository repository;
+    private int categoryId;
     private int selectedAnswer = -1;
     private long startTime;
 
-    public QuizFragment(int categoryId, QuizRepository repository) {
+    public QuizFragment(int categoryId) {
         this.categoryId = categoryId;
-        this.repository = repository;
     }
 
     @Override
@@ -36,11 +42,18 @@ public class QuizFragment extends Fragment {
         RadioGroup optionsGroup = view.findViewById(R.id.options_group);
         Button submitButton = view.findViewById(R.id.submit_button);
 
+        repository = new QuizRepository(
+                AppDatabase.getDatabase(getContext()).quizDao(),
+                AppDatabase.getDatabase(getContext()).categoryDao(),
+                AppDatabase.getDatabase(getContext()).analyticsDao(),
+                RetrofitClient.getApiService()
+        );
+
         progressBar.setVisibility(View.VISIBLE);
         repository.getQuizzesByCategory(categoryId).observe(getViewLifecycleOwner(), quizzes -> {
             progressBar.setVisibility(View.GONE);
-            if (!quizzes.isEmpty()) {
-                Quiz quiz = quizzes.get(0);
+            if (quizzes != null && !quizzes.isEmpty()) {
+                Quiz quiz = quizzes.get(0); // For simplicity, show the first quiz
                 questionText.setText(quiz.getQuestion());
                 optionsGroup.removeAllViews();
                 for (int i = 0; i < quiz.getOptions().size(); i++) {
@@ -53,12 +66,11 @@ public class QuizFragment extends Fragment {
                 startTime = System.currentTimeMillis();
                 submitButton.setOnClickListener(v -> {
                     long timeTaken = System.currentTimeMillis() - startTime;
-                    repository.submitAnalytics(new AnalyticsRequest(quiz.getId(), selectedAnswer, timeTaken), getContext());
+                    repository.submitAnalytics(new AnalyticsRequest(quiz.getId(), String.valueOf(selectedAnswer), timeTaken), getContext());
                     Toast.makeText(getContext(), "Answer submitted", Toast.LENGTH_SHORT).show();
-                    requireActivity().getSupportFragmentManager().popBackStack();
                 });
             } else {
-                questionText.setText("No quizzes available");
+                questionText.setText("No quizzes available for this category");
             }
         });
 
