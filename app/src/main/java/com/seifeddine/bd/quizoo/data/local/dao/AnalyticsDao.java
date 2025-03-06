@@ -4,7 +4,9 @@ import androidx.lifecycle.LiveData;
 import androidx.room.Dao;
 import androidx.room.Insert;
 import androidx.room.Query;
+
 import com.seifeddine.bd.quizoo.data.local.entity.Analytics;
+
 import java.util.List;
 
 @Dao
@@ -17,4 +19,9 @@ public interface AnalyticsDao {
 
     @Query("SELECT * FROM analytics")
     List<Analytics> getAllAnalyticsSync();
+    @Query("DELETE FROM quizzes")
+    void deleteAll();
+
+    @Query("SELECT * FROM analytics WHERE quizId = :quizId")
+    LiveData<Analytics> getAnalyticsByQuizId(String quizId);
 }

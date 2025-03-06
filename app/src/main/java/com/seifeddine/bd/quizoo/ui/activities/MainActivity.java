@@ -1,50 +1,36 @@
 package com.seifeddine.bd.quizoo.ui.activities;
 
+import android.content.Intent;
 import android.os.Bundle;
-import android.view.Menu;
-import android.view.MenuItem;
-
+import android.os.Handler;
+import android.os.Looper;
+import android.view.View;
+import android.widget.ImageView;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.fragment.app.Fragment;
-
+import com.google.android.material.textview.MaterialTextView;
 import com.seifeddine.bd.quizoo.R;
 
-import com.seifeddine.bd.quizoo.ui.fragments.AnalyticsFragment;
-import com.seifeddine.bd.quizoo.ui.fragments.CategoriesFragment;
 public class MainActivity extends AppCompatActivity {
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main);
+        setContentView(R.layout.activity_splash);
 
-        if (savedInstanceState == null) {
-            getSupportFragmentManager().beginTransaction()
-                    .replace(R.id.fragment_container, new CategoriesFragment())
-                    .commit();
-        }
-    }
+        ImageView logo = findViewById(R.id.splash_logo);
+        MaterialTextView appName = findViewById(R.id.app_name_text);
 
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        getMenuInflater().inflate(R.menu.main_menu, menu);
-        return true;
-    }
+        // Fade-in animation for logo and app name
+        logo.setAlpha(0f);
+        appName.setAlpha(0f);
+        logo.animate().alpha(1f).setDuration(1000).start();
+        appName.animate().alpha(1f).setDuration(1000).setStartDelay(500).start();
 
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        Fragment fragment = null;
-        if (item.getItemId() == R.id.menu_categories) {
-            fragment = new CategoriesFragment();
-        } else if (item.getItemId() == R.id.menu_analytics) {
-            fragment = new AnalyticsFragment();
-        }
-        if (fragment != null) {
-            getSupportFragmentManager().beginTransaction()
-                    .replace(R.id.fragment_container, fragment)
-                    .addToBackStack(null)
-                    .commit();
-            return true;
-        }
-        return super.onOptionsItemSelected(item);
+        new Handler(Looper.getMainLooper()).postDelayed(() -> {
+            Intent intent = new Intent(MainActivity.this, QuizActivity.class);
+            startActivity(intent);
+            overridePendingTransition(android.R.anim.fade_in, android.R.anim.fade_out);
+            finish();
+        }, 2000);
     }
 }

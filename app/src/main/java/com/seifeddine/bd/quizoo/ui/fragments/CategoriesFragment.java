@@ -8,6 +8,7 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 
 import androidx.fragment.app.Fragment;
+import androidx.navigation.fragment.NavHostFragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -16,7 +17,6 @@ import com.seifeddine.bd.quizoo.data.local.AppDatabase;
 import com.seifeddine.bd.quizoo.data.local.entity.Category;
 import com.seifeddine.bd.quizoo.data.remote.RetrofitClient;
 import com.seifeddine.bd.quizoo.data.repository.QuizRepository;
-import com.seifeddine.bd.quizoo.ui.activities.QuizActivity;
 import com.seifeddine.bd.quizoo.ui.adapters.CategoryAdapter;
 
 import java.util.List;
@@ -32,7 +32,11 @@ public class CategoriesFragment extends Fragment {
         TextView statusText = view.findViewById(R.id.status_text);
         RecyclerView recyclerView = view.findViewById(R.id.category_list);
         recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
-        adapter = new CategoryAdapter(category -> QuizActivity.start(getContext(), category.getId()));
+        adapter = new CategoryAdapter(category -> {
+            Bundle args = new Bundle();
+            args.putInt("categoryId", category.getId());
+            NavHostFragment.findNavController(this).navigate(R.id.nav_quiz, args);
+        });
         recyclerView.setAdapter(adapter);
 
         repository = new QuizRepository(
@@ -42,12 +46,10 @@ public class CategoriesFragment extends Fragment {
                 RetrofitClient.getApiService()
         );
 
-        // Show loading state
         statusText.setText("Loading categories...");
         statusText.setVisibility(View.VISIBLE);
         recyclerView.setVisibility(View.GONE);
 
-        // Watch for category updates
         repository.getCategories().observe(getViewLifecycleOwner(), categories -> {
             Log.d(TAG, "Categories from LiveData: " + (categories != null ? categories.size() : "null"));
             if (categories != null && !categories.isEmpty()) {

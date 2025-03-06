@@ -1,18 +1,37 @@
 package com.seifeddine.bd.quizoo.data.remote.dto;
 
 public class AnalyticsRequest {
-    private int quizId;
-    private String userAnswer;
+    private String quizId;
+    private String selectedAnswer;
     private long timeTaken;
 
-    // Constructor, getters, and setters
-    public AnalyticsRequest(int quizId, String userAnswer, long timeTaken) {
+    public AnalyticsRequest(String quizId, String selectedAnswer, long timeTaken) {
         this.quizId = quizId;
-        this.userAnswer = userAnswer;
+        this.selectedAnswer = selectedAnswer;
         this.timeTaken = timeTaken;
     }
 
-    public int getQuizId() { return quizId; }
-    public String getUserAnswer() { return userAnswer; }
-    public long getTimeTaken() { return timeTaken; }
+    public String getQuizId() {
+        return quizId;
+    }
+
+    public void setQuizId(String quizId) {
+        this.quizId = quizId;
+    }
+
+    public String getSelectedAnswer() {
+        return selectedAnswer;
+    }
+
+    public void setSelectedAnswer(String selectedAnswer) {
+        this.selectedAnswer = selectedAnswer;
+    }
+
+    public long getTimeTaken() {
+        return timeTaken;
+    }
+
+    public void setTimeTaken(long timeTaken) {
+        this.timeTaken = timeTaken;
+    }
 }

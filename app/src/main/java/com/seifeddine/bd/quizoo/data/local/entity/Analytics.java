@@ -7,23 +7,48 @@ import androidx.room.PrimaryKey;
 public class Analytics {
     @PrimaryKey(autoGenerate = true)
     private int id;
-    private int quizId;
-    private String userAnswer;
+
+    private String quizId;
+    private String selectedAnswer;
     private long timeTaken;
 
-    public Analytics(int quizId, String userAnswer, long timeTaken) {
+    // Constructor
+    public Analytics(String quizId, String selectedAnswer, long timeTaken) {
         this.quizId = quizId;
-        this.userAnswer = userAnswer;
+        this.selectedAnswer = selectedAnswer;
         this.timeTaken = timeTaken;
     }
 
-    // Getters and setters
-    public int getId() { return id; }
-    public void setId(int id) { this.id = id; }
-    public int getQuizId() { return quizId; }
-    public void setQuizId(int quizId) { this.quizId = quizId; }
-    public String getUserAnswer() { return userAnswer; }
-    public void setUserAnswer(String userAnswer) { this.userAnswer = userAnswer; }
-    public long getTimeTaken() { return timeTaken; }
-    public void setTimeTaken(long timeTaken) { this.timeTaken = timeTaken; }
+    // Getters and Setters
+    public int getId() {
+        return id;
+    }
+
+    public void setId(int id) {
+        this.id = id;
+    }
+
+    public String getQuizId() {
+        return quizId;
+    }
+
+    public void setQuizId(String quizId) {
+        this.quizId = quizId;
+    }
+
+    public String getSelectedAnswer() {
+        return selectedAnswer;
+    }
+
+    public void setSelectedAnswer(String selectedAnswer) {
+        this.selectedAnswer = selectedAnswer;
+    }
+
+    public long getTimeTaken() {
+        return timeTaken;
+    }
+
+    public void setTimeTaken(long timeTaken) {
+        this.timeTaken = timeTaken;
+    }
 }

@@ -10,11 +10,14 @@ import retrofit2.Call;
 import retrofit2.http.Body;
 import retrofit2.http.GET;
 import retrofit2.http.POST;
-import retrofit2.Call;
-import retrofit2.http.Body;
-import retrofit2.http.POST;
 
 public interface QuizApiService {
-    @POST("submit-analytics")
-    Call<Void> submitAnalytics(@Body AnalyticsRequest analyticsRequest);
+    @POST("analytics")
+    Call<Void> submitAnalytics(@Body AnalyticsRequest request);
+
+    @GET("categories")
+    Call<List<NetworkCategory>> getCategories();
+
+    @GET("quizzes")
+    Call<List<NetworkQuiz>> getQuizzes();
 }

@@ -11,31 +11,26 @@ import com.seifeddine.bd.quizoo.data.local.entity.Analytics;
 import java.util.ArrayList;
 import java.util.List;
 
-public class AnalyticsAdapter extends RecyclerView.Adapter<AnalyticsAdapter.ViewHolder> {
+public class ResultsAdapter extends RecyclerView.Adapter<ResultsAdapter.ViewHolder> {
     private List<Analytics> analyticsList;
 
-    public AnalyticsAdapter(List<Analytics> analyticsList) {
+    public ResultsAdapter(List<Analytics> analyticsList) {
         this.analyticsList = analyticsList != null ? analyticsList : new ArrayList<>();
-    }
-
-    // Add method to update the analytics list
-    public void setAnalytics(List<Analytics> newAnalyticsList) {
-        this.analyticsList = newAnalyticsList != null ? new ArrayList<>(newAnalyticsList) : new ArrayList<>();
-        notifyDataSetChanged();
     }
 
     @NonNull
     @Override
     public ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_analytics, parent, false);
+        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_result, parent, false);
         return new ViewHolder(view);
     }
 
     @Override
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
         Analytics analytics = analyticsList.get(position);
-        holder.analyticsText.setText(String.format("Quiz ID: %s, Answer: %s, Time: %dms",
-                analytics.getQuizId(), analytics.getSelectedAnswer(), analytics.getTimeTaken()));
+        holder.quizIdText.setText("Quiz ID: " + analytics.getQuizId());
+        holder.selectedAnswerText.setText("Selected Answer: " + (analytics.getSelectedAnswer() != null ? analytics.getSelectedAnswer() : "N/A"));
+        holder.timeTakenText.setText("Time Taken: " + (analytics.getTimeTaken() / 1000) + "s");
     }
 
     @Override
@@ -44,11 +39,13 @@ public class AnalyticsAdapter extends RecyclerView.Adapter<AnalyticsAdapter.View
     }
 
     static class ViewHolder extends RecyclerView.ViewHolder {
-        MaterialTextView analyticsText;
+        MaterialTextView quizIdText, selectedAnswerText, timeTakenText;
 
         ViewHolder(View itemView) {
             super(itemView);
-            analyticsText = itemView.findViewById(R.id.analytics_text);
+            quizIdText = itemView.findViewById(R.id.result_quiz_id);
+            selectedAnswerText = itemView.findViewById(R.id.result_selected_answer);
+            timeTakenText = itemView.findViewById(R.id.result_time_taken);
         }
     }
 }

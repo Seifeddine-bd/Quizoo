@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/nav_graph"
+    app:startDestination="@id/nav_categories">
+
+    <fragment
+        android:id="@+id/nav_categories"
+        android:name="com.seifeddine.bd.quizoo.ui.fragments.CategoriesFragment"
+        android:label="Categories" />
+
+    <fragment
+        android:id="@+id/nav_quiz"
+        android:name="com.seifeddine.bd.quizoo.ui.fragments.QuizFragment"
+        android:label="Quiz">
+        <argument
+            android:name="categoryId"
+            app:argType="integer"
+            android:defaultValue="-1" />
+    </fragment>
+
+    <fragment
+        android:id="@+id/nav_results"
+        android:name="com.seifeddine.bd.quizoo.ui.fragments.ResultsFragment"
+        android:label="Results" />
+</navigation>

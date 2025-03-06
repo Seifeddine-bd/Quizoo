@@ -1,8 +1,23 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <color name="primaryColor">#2196F3</color>
-    <color name="secondaryColor">#BBDEFB</color>
-    <color name="backgroundDark">#121212</color>
-    <color name="textPrimary">#FFFFFF</color>
-    <color name="textSecondary">#B0BEC5</color>
+    <!-- Primary colors -->
+    <color name="primaryColor">#FF3F51B5</color> <!-- Indigo 500 -->
+    <color name="primaryDarkColor">#FF1A237E</color> <!-- Indigo 900 -->
+    <color name="primaryLightColor">#FF8C9EFF</color> <!-- Indigo 200 -->
+    <color name="secondaryColor">#FF0288D1</color> <!-- Light Blue 700 -->
+
+    <!-- Background and surface colors -->
+    <color name="backgroundDark">#FF121212</color> <!-- Dark theme background -->
+    <color name="surface">#FF1E1E1E</color> <!-- Card and surface background -->
+
+    <!-- Text colors -->
+    <color name="textPrimary">#FFFFFFFF</color> <!-- White for primary text -->
+    <color name="textSecondary">#FFB0BEC5</color> <!-- Light gray for secondary text -->
+
+    <!-- Feedback colors -->
+    <color name="successColor">#FF4CAF50</color> <!-- Green for correct answers -->
+    <color name="errorColor">#FFF44336</color> <!-- Red for incorrect answers -->
+
+    <!-- Accent colors -->
+    <color name="accentColor">#FFFFC107</color> <!-- Amber for highlights -->
 </resources>
