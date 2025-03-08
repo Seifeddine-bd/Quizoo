@@ -28,7 +28,7 @@ public class AnalyticsFragment extends Fragment {
 
         RecyclerView recyclerView = view.findViewById(R.id.analytics_list);
         recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
-        adapter = new AnalyticsAdapter(new ArrayList<>()); // Provide an initial empty list
+        adapter = new AnalyticsAdapter(new ArrayList<>());
         recyclerView.setAdapter(adapter);
 
         repository = new QuizRepository(

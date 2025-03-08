@@ -12,7 +12,9 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.fragment.app.Fragment;
+import androidx.navigation.Navigation;
 
+import com.google.android.material.button.MaterialButton;
 import com.google.android.material.snackbar.Snackbar;
 import com.seifeddine.bd.quizoo.R;
 import com.seifeddine.bd.quizoo.data.local.AppDatabase;
@@ -57,6 +59,7 @@ public class QuizFragment extends Fragment {
         Button submitButton = view.findViewById(R.id.submit_button);
         Button nextQuizButton = view.findViewById(R.id.next_quiz_button);
         TextView resultText = view.findViewById(R.id.result_text);
+        MaterialButton backToMainButton = view.findViewById(R.id.back_to_main_button);
 
         repository = new QuizRepository(
                 AppDatabase.getDatabase(getContext()).quizDao(),
@@ -91,7 +94,6 @@ public class QuizFragment extends Fragment {
             resultText.setVisibility(View.VISIBLE);
             resultText.setTextColor(isCorrect ? getResources().getColor(R.color.successColor) : getResources().getColor(R.color.errorColor));
             nextQuizButton.setVisibility(View.VISIBLE);
-            // Map selectedAnswer index to the actual answer text
             String selectedAnswerText = quiz.getOptions().get(selectedAnswer);
             repository.submitAnalytics(new AnalyticsRequest(quiz.getId(), selectedAnswerText, timeTaken), getContext());
             Snackbar.make(view, result, Snackbar.LENGTH_SHORT).show();
@@ -113,6 +115,10 @@ public class QuizFragment extends Fragment {
                 Toast.makeText(getContext(), "No more quizzes in this category", Toast.LENGTH_SHORT).show();
                 nextQuizButton.setVisibility(View.GONE);
             }
+        });
+
+        backToMainButton.setOnClickListener(v -> {
+            Navigation.findNavController(v).navigate(R.id.action_quizFragment_to_mainFragment);
         });
 
         return view;

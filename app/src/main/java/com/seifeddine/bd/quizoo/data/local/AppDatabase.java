@@ -17,12 +17,11 @@ import com.seifeddine.bd.quizoo.data.local.entity.Analytics;
 import com.seifeddine.bd.quizoo.data.local.entity.Category;
 import com.seifeddine.bd.quizoo.data.local.entity.Quiz;
 
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
-@Database(entities = {Quiz.class, Category.class, Analytics.class}, version = 1, exportSchema = false)
+@Database(entities = {Quiz.class, Category.class, Analytics.class}, version = 2, exportSchema = false)
 @TypeConverters({OptionsConverter.class})
 public abstract class AppDatabase extends RoomDatabase {
     private static final String TAG = "AppDatabase";
@@ -43,6 +42,7 @@ public abstract class AppDatabase extends RoomDatabase {
                     INSTANCE = Room.databaseBuilder(context.getApplicationContext(),
                                     AppDatabase.class, DATABASE_NAME)
                             .addCallback(sRoomDatabaseCallback)
+                            .fallbackToDestructiveMigration() // Clear database on version change
                             .build();
                 }
             }
@@ -63,8 +63,6 @@ public abstract class AppDatabase extends RoomDatabase {
                 quizDao.deleteAll();
                 categoryDao.deleteAll();
                 analyticsDao.deleteAll();
-                quizDao.insertAll(new ArrayList<>()); // Fixed method name
-                analyticsDao.insert(new Analytics(String.valueOf(0), "0", 0L)); // Fixed type for quizId
 
                 // Pre-populate categories
                 Category science = new Category(1, "Science");
@@ -76,14 +74,16 @@ public abstract class AppDatabase extends RoomDatabase {
                 Quiz quiz1 = new Quiz("1", 1, "What is the chemical symbol for water?", Arrays.asList("H2O", "CO2", "O2", "N2"), 0);
                 Quiz quiz2 = new Quiz("2", 1, "What planet is known as the Red Planet?", Arrays.asList("Jupiter", "Mars", "Venus", "Mercury"), 1);
                 Quiz quiz3 = new Quiz("3", 2, "In which year did World War II end?", Arrays.asList("1945", "1918", "1939", "1941"), 0);
-                quizDao.insertAll(Arrays.asList(quiz1, quiz2, quiz3)); // Fixed method name
+                quizDao.insertAll(Arrays.asList(quiz1, quiz2, quiz3));
                 Log.d(TAG, "Inserted quizzes: " + quizDao.getAllQuizzesSync().size());
 
-                // Pre-populate analytics
-                Analytics analytics1 = new Analytics(String.valueOf(1), "A", 5000L); // Fixed type for quizId
-                Analytics analytics2 = new Analytics(String.valueOf(2), "B", 3000L); // Fixed type for quizId
+                // Pre-populate analytics with correct answers for testing
+                Analytics analytics1 = new Analytics("1", "H2O", 1957L); // Correct answer
+                Analytics analytics2 = new Analytics("2", "Mars", 1881L); // Correct answer
+                Analytics analytics3 = new Analytics("3", "1939", 2646L); // Incorrect answer
                 analyticsDao.insert(analytics1);
                 analyticsDao.insert(analytics2);
+                analyticsDao.insert(analytics3);
                 Log.d(TAG, "Inserted analytics: " + analyticsDao.getAllAnalyticsSync().size());
             });
         }

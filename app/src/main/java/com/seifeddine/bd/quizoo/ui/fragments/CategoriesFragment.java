@@ -35,7 +35,7 @@ public class CategoriesFragment extends Fragment {
         adapter = new CategoryAdapter(category -> {
             Bundle args = new Bundle();
             args.putInt("categoryId", category.getId());
-            NavHostFragment.findNavController(this).navigate(R.id.nav_quiz, args);
+            NavHostFragment.findNavController(this).navigate(R.id.action_categoriesFragment_to_quizFragment, args);
         });
         recyclerView.setAdapter(adapter);
 

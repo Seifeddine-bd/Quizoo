@@ -36,24 +36,24 @@
             android:padding="16dp">
 
             <com.google.android.material.textview.MaterialTextView
-                android:id="@+id/total_quizzes"
-                android:layout_width="wrap_content"
+                android:id="@+id/total_quizzes_text"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:text="Total Quizzes: 0"
                 android:textAppearance="?attr/textAppearanceBodyMedium"
                 android:paddingBottom="8dp"/>
 
             <com.google.android.material.textview.MaterialTextView
-                android:id="@+id/correct_answers"
-                android:layout_width="wrap_content"
+                android:id="@+id/correct_answers_text"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:text="Correct Answers: 0"
                 android:textAppearance="?attr/textAppearanceBodyMedium"
                 android:paddingBottom="8dp"/>
 
             <com.google.android.material.textview.MaterialTextView
-                android:id="@+id/average_time"
-                android:layout_width="wrap_content"
+                android:id="@+id/average_time_text"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:text="Average Time: 0s"
                 android:textAppearance="?attr/textAppearanceBodyMedium"/>
@@ -62,7 +62,7 @@
     </androidx.cardview.widget.CardView>
 
     <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/results_list"
+        android:id="@+id/analytics_list"
         android:layout_width="0dp"
         android:layout_height="0dp"
         app:layout_constraintTop_toBottomOf="@id/summary_card"

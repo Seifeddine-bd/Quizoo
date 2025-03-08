@@ -102,6 +102,18 @@
         app:layout_constraintTop_toBottomOf="@id/result_text"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintBottom_toTopOf="@id/back_to_main_button"/>
+
+    <com.google.android.material.button.MaterialButton
+        android:id="@+id/back_to_main_button"
+        style="@style/Quizoo.Button.ElevatedButton"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:text="Back to Main"
+        android:backgroundTint="@color/secondaryColor"
+        app:layout_constraintTop_toBottomOf="@id/next_quiz_button"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintBottom_toBottomOf="parent"/>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

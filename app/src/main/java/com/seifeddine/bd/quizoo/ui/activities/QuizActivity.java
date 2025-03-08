@@ -69,22 +69,20 @@ public class QuizActivity extends AppCompatActivity implements NavigationView.On
         }
 
         appBarConfiguration = new AppBarConfiguration.Builder(
-                R.id.nav_categories, R.id.nav_quiz, R.id.nav_results)
+                R.id.mainFragment, R.id.categoriesFragment, R.id.quizFragment, R.id.resultsFragment)
                 .setOpenableLayout(drawerLayout)
                 .build();
 
         NavigationUI.setupActionBarWithNavController(this, navController, appBarConfiguration);
         NavigationUI.setupWithNavController(navigationView, navController);
 
-        // Initial navigation
+        // Initial navigation if categoryId is provided
         if (savedInstanceState == null) {
             int categoryId = getIntent().getIntExtra("categoryId", -1);
             if (categoryId != -1) {
                 Bundle args = new Bundle();
                 args.putInt("categoryId", categoryId);
-                navController.navigate(R.id.nav_quiz, args);
-            } else {
-                navController.navigate(R.id.nav_categories);
+                navController.navigate(R.id.action_mainFragment_to_quizFragment, args);
             }
         }
     }
@@ -92,10 +90,12 @@ public class QuizActivity extends AppCompatActivity implements NavigationView.On
     @Override
     public boolean onNavigationItemSelected(@NonNull MenuItem item) {
         int id = item.getItemId();
-        if (id == R.id.nav_categories) {
-            navController.navigate(R.id.nav_categories);
-        } else if (id == R.id.nav_results) {
-            navController.navigate(R.id.nav_results);
+        if (id == R.id.mainFragment) {
+            navController.navigate(R.id.mainFragment);
+        } else if (id == R.id.categoriesFragment) {
+            navController.navigate(R.id.categoriesFragment);
+        } else if (id == R.id.resultsFragment) {
+            navController.navigate(R.id.resultsFragment);
         }
         drawerLayout.closeDrawer(GravityCompat.START);
         return true;
@@ -111,9 +111,9 @@ public class QuizActivity extends AppCompatActivity implements NavigationView.On
         if (drawerLayout.isDrawerOpen(GravityCompat.START)) {
             drawerLayout.closeDrawer(GravityCompat.START);
         } else if (navController.getCurrentDestination() != null &&
-                navController.getCurrentDestination().getId() != R.id.nav_categories) {
-            // If not on CategoriesFragment, navigate back to it
-            navController.navigate(R.id.nav_categories);
+                navController.getCurrentDestination().getId() != R.id.mainFragment) {
+            // If not on MainFragment, navigate back to it
+            navController.navigate(R.id.mainFragment);
         } else {
             // Double back press to exit
             if (backPressedTime + 2000 > System.currentTimeMillis()) {

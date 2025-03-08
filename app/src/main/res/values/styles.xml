@@ -13,10 +13,9 @@
         <item name="textAppearanceHeadlineMedium">@style/TextAppearance.Quizoo.HeadlineMedium</item>
         <item name="textAppearanceBodyMedium">@style/TextAppearance.Quizoo.BodyMedium</item>
     </style>
+    <style name="Theme.Quizoo.AppBarOverlay" parent="ThemeOverlay.AppCompat.Dark.ActionBar" />
+    <style name="Theme.Quizoo.PopupOverlay" parent="ThemeOverlay.AppCompat.Light" />
 
-    <style name="Theme.Quizoo.AppBarOverlay" parent="ThemeOverlay.MaterialComponents.Dark.ActionBar" />
-
-    <style name="Theme.Quizoo.PopupOverlay" parent="ThemeOverlay.MaterialComponents.Light" />
 
     <!-- Custom ElevatedButton style as a fallback -->
     <style name="Quizoo.Button.ElevatedButton" parent="Widget.MaterialComponents.Button">
