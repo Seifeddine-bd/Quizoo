@@ -28,7 +28,7 @@ public class ResultsAdapter extends RecyclerView.Adapter<ResultsAdapter.ViewHold
     @Override
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
         Analytics analytics = analyticsList.get(position);
-        holder.quizIdText.setText("Quiz ID: " + analytics.getQuizId());
+      //  holder.quizIdText.setText("Quiz ID: " + analytics.getQuizId());
         holder.selectedAnswerText.setText("Selected Answer: " + (analytics.getSelectedAnswer() != null ? analytics.getSelectedAnswer() : "N/A"));
         holder.timeTakenText.setText("Time Taken: " + (analytics.getTimeTaken() / 1000) + "s");
     }
@@ -43,7 +43,7 @@ public class ResultsAdapter extends RecyclerView.Adapter<ResultsAdapter.ViewHold
 
         ViewHolder(View itemView) {
             super(itemView);
-            quizIdText = itemView.findViewById(R.id.result_quiz_id);
+           // quizIdText = itemView.findViewById(R.id.result_quiz_id);
             selectedAnswerText = itemView.findViewById(R.id.result_selected_answer);
             timeTakenText = itemView.findViewById(R.id.result_time_taken);
         }

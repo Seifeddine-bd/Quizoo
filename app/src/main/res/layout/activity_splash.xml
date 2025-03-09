@@ -25,13 +25,14 @@
         android:id="@+id/app_name_text"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="@string/app_name"
-        android:textAppearance="?attr/textAppearanceHeadlineMedium"
         android:alpha="0"
         android:animateLayoutChanges="true"
-        app:layout_constraintTop_toBottomOf="@id/splash_logo"
-        app:layout_constraintStart_toStartOf="parent"
+        android:padding="16dp"
+        android:text="@string/app_name"
+        android:textAppearance="?attr/textAppearanceHeadlineMedium"
+        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        android:padding="16dp"/>
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/splash_logo" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

@@ -5,6 +5,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -18,7 +19,7 @@ import com.seifeddine.bd.quizoo.data.local.entity.Category;
 import com.seifeddine.bd.quizoo.data.local.entity.Quiz;
 import com.seifeddine.bd.quizoo.data.remote.RetrofitClient;
 import com.seifeddine.bd.quizoo.data.repository.QuizRepository;
-import com.seifeddine.bd.quizoo.ui.adapters.AnalyticsAdapter;
+import com.seifeddine.bd.quizoo.ui.adapters.CategoryResultsAdapter;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -29,7 +30,7 @@ import java.util.TreeMap;
 public class ResultsFragment extends Fragment {
     private static final String TAG = "ResultsFragment";
     private QuizRepository repository;
-    private AnalyticsAdapter adapter;
+    private CategoryResultsAdapter adapter;
     private MaterialTextView totalQuizzesText;
     private MaterialTextView correctAnswersText;
     private MaterialTextView averageTimeText;
@@ -46,7 +47,7 @@ public class ResultsFragment extends Fragment {
         averageTimeText = view.findViewById(R.id.average_time_text);
         RecyclerView recyclerView = view.findViewById(R.id.analytics_list);
         recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
-        adapter = new AnalyticsAdapter(new ArrayList<>());
+        adapter = new CategoryResultsAdapter();
         recyclerView.setAdapter(adapter);
 
         repository = new QuizRepository(
@@ -82,13 +83,23 @@ public class ResultsFragment extends Fragment {
         // Filter analytics to keep only the latest attempt per quizId
         Map<String, Analytics> latestAnalyticsMap = new TreeMap<>();
         for (Analytics analytics : analyticsList) {
-            latestAnalyticsMap.put(analytics.getQuizId(), analytics); // Newest entries overwrite older ones
+            latestAnalyticsMap.put(analytics.getQuizId(), analytics);
         }
         List<Analytics> filteredAnalytics = new ArrayList<>(latestAnalyticsMap.values());
         Log.d(TAG, "Filtered Analytics List: " + filteredAnalytics);
 
-        // Update adapter with filtered list
-        adapter.setAnalytics(filteredAnalytics, quizMap, quizzesByCategory, categoryNames);
+        // Group analytics by category
+        Map<Integer, List<Analytics>> analyticsByCategory = new HashMap<>();
+        for (Analytics analytics : filteredAnalytics) {
+            Quiz quiz = quizMap.get(analytics.getQuizId());
+            if (quiz != null) {
+                int categoryId = quiz.getCategoryId();
+                analyticsByCategory.computeIfAbsent(categoryId, k -> new ArrayList<>()).add(analytics);
+            }
+        }
+
+        // Update adapter with categorized data
+        adapter.setData(categoryNames, quizzesByCategory, analyticsByCategory, quizMap);
 
         // Calculate total quizzes
         int totalQuizzes = filteredAnalytics.size();
@@ -106,8 +117,6 @@ public class ResultsFragment extends Fragment {
                 if (analytics.getSelectedAnswer().equals(correctAnswer)) {
                     correctAnswers++;
                 }
-            } else {
-                Log.w(TAG, "Quiz not found for ID: " + analytics.getQuizId());
             }
         }
 
