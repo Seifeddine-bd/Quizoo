@@ -3,20 +3,26 @@ package com.seifeddine.bd.quizoo.ui.adapters;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.bumptech.glide.Glide;
+import com.google.android.material.imageview.ShapeableImageView;
 import com.seifeddine.bd.quizoo.R;
 import com.seifeddine.bd.quizoo.data.local.entity.Category;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
-public class CategoryAdapter extends RecyclerView.Adapter<CategoryAdapter.ViewHolder> {
+public class CategoryAdapter extends RecyclerView.Adapter<CategoryAdapter.CategoryViewHolder> {
+
     private List<Category> categories = new ArrayList<>();
     private OnCategoryClickListener listener;
+    private Map<Integer, Integer> categoryIconMap; // Map category ID to drawable resource
 
     public interface OnCategoryClickListener {
         void onCategoryClick(Category category);
@@ -24,24 +30,34 @@ public class CategoryAdapter extends RecyclerView.Adapter<CategoryAdapter.ViewHo
 
     public CategoryAdapter(OnCategoryClickListener listener) {
         this.listener = listener;
+        // Initialize icon map (example)
+        categoryIconMap = Map.of(
+                1, R.drawable.ic_launcher_background, // Replace with actual drawable
+                2, R.drawable.ic_launcher_background  // Replace with actual drawable
+        );
+    }
+
+    public void setCategories(List<Category> categories) {
+        this.categories = categories != null ? new ArrayList<>(categories) : new ArrayList<>();
+        notifyDataSetChanged();
     }
 
     @NonNull
     @Override
-    public ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+    public CategoryViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_category, parent, false);
-        return new ViewHolder(view);
+        return new CategoryViewHolder(view);
     }
 
     @Override
-    public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
+    public void onBindViewHolder(@NonNull CategoryViewHolder holder, int position) {
         Category category = categories.get(position);
         holder.categoryName.setText(category.getName());
-        holder.itemView.setOnClickListener(v -> {
-            if (listener != null) {
-                listener.onCategoryClick(category);
-            }
-        });
+        holder.categoryLogo.setImageResource(categoryIconMap.getOrDefault(category.getId(), R.drawable.ic_arrow_right));
+        holder.itemView.setOnClickListener(v -> listener.onCategoryClick(category));
+        Glide.with(holder.categoryLogo.getContext())
+                .load(categoryIconMap.getOrDefault(category.getId(), R.drawable.ic_category_default))
+                .into(holder.categoryLogo);
     }
 
     @Override
@@ -49,16 +65,13 @@ public class CategoryAdapter extends RecyclerView.Adapter<CategoryAdapter.ViewHo
         return categories.size();
     }
 
-    public void setCategories(List<Category> categories) {
-        this.categories = categories != null ? categories : new ArrayList<>();
-        notifyDataSetChanged();
-    }
-
-    static class ViewHolder extends RecyclerView.ViewHolder {
+    static class CategoryViewHolder extends RecyclerView.ViewHolder {
+        ShapeableImageView categoryLogo;
         TextView categoryName;
 
-        ViewHolder(View itemView) {
+        CategoryViewHolder(View itemView) {
             super(itemView);
+            categoryLogo = itemView.findViewById(R.id.category_logo);
             categoryName = itemView.findViewById(R.id.category_name);
         }
     }

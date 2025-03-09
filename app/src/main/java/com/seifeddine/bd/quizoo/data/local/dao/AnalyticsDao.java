@@ -14,6 +14,9 @@ public interface AnalyticsDao {
     @Insert
     void insert(Analytics analytics);
 
+    @Insert
+    void insertAll(List<Analytics> analytics);
+
     @Query("SELECT * FROM analytics")
     LiveData<List<Analytics>> getAllAnalytics();
 

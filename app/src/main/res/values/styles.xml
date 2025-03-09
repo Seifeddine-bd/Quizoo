@@ -15,7 +15,10 @@
     </style>
     <style name="Theme.Quizoo.AppBarOverlay" parent="ThemeOverlay.AppCompat.Dark.ActionBar" />
     <style name="Theme.Quizoo.PopupOverlay" parent="ThemeOverlay.AppCompat.Light" />
-
+    <style name="RoundedImageView" parent="">
+        <item name="cornerFamily">rounded</item>
+        <item name="cornerSize">16dp</item>
+    </style>
 
     <!-- Custom ElevatedButton style as a fallback -->
     <style name="Quizoo.Button.ElevatedButton" parent="Widget.MaterialComponents.Button">

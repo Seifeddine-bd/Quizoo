@@ -1,15 +1,14 @@
 package com.seifeddine.bd.quizoo.ui.fragments;
 
 import android.os.Bundle;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.TextView;
 
+import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
-import androidx.navigation.fragment.NavHostFragment;
-import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.navigation.Navigation;
+import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.seifeddine.bd.quizoo.R;
@@ -22,20 +21,22 @@ import com.seifeddine.bd.quizoo.ui.adapters.CategoryAdapter;
 import java.util.List;
 
 public class CategoriesFragment extends Fragment {
-    private static final String TAG = "CategoriesFragment";
+
     private QuizRepository repository;
     private CategoryAdapter adapter;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_categories, container, false);
-        TextView statusText = view.findViewById(R.id.status_text);
-        RecyclerView recyclerView = view.findViewById(R.id.category_list);
-        recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
+
+        RecyclerView recyclerView = view.findViewById(R.id.categories_recycler_view);
+        int spanCount = 2; // 2 columns for grid
+        recyclerView.setLayoutManager(new GridLayoutManager(getContext(), spanCount));
         adapter = new CategoryAdapter(category -> {
+            // Use NavController for navigation
             Bundle args = new Bundle();
             args.putInt("categoryId", category.getId());
-            NavHostFragment.findNavController(this).navigate(R.id.action_categoriesFragment_to_quizFragment, args);
+            Navigation.findNavController(view).navigate(R.id.action_categoriesFragment_to_quizFragment, args);
         });
         recyclerView.setAdapter(adapter);
 
@@ -46,21 +47,9 @@ public class CategoriesFragment extends Fragment {
                 RetrofitClient.getApiService()
         );
 
-        statusText.setText("Loading categories...");
-        statusText.setVisibility(View.VISIBLE);
-        recyclerView.setVisibility(View.GONE);
-
+        // Observe categories and update adapter
         repository.getCategories().observe(getViewLifecycleOwner(), categories -> {
-            Log.d(TAG, "Categories from LiveData: " + (categories != null ? categories.size() : "null"));
-            if (categories != null && !categories.isEmpty()) {
-                adapter.setCategories(categories);
-                statusText.setVisibility(View.GONE);
-                recyclerView.setVisibility(View.VISIBLE);
-            } else {
-                statusText.setText("No categories available");
-                statusText.setVisibility(View.VISIBLE);
-                recyclerView.setVisibility(View.GONE);
-            }
+            adapter.setCategories(categories);
         });
 
         return view;
