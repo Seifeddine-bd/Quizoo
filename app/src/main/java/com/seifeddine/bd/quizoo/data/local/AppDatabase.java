@@ -10,6 +10,7 @@ import androidx.room.RoomDatabase;
 import androidx.room.TypeConverters;
 import androidx.sqlite.db.SupportSQLiteDatabase;
 
+import com.seifeddine.bd.quizoo.R;
 import com.seifeddine.bd.quizoo.data.local.dao.AnalyticsDao;
 import com.seifeddine.bd.quizoo.data.local.dao.CategoryDao;
 import com.seifeddine.bd.quizoo.data.local.dao.QuizDao;
@@ -65,11 +66,11 @@ public abstract class AppDatabase extends RoomDatabase {
                 analyticsDao.deleteAll();
 
                 // Pre-populate categories
-                Category programming = new Category(1, "Programming");
-                Category computerScience = new Category(2, "Computer Science");
-                Category artificialIntelligence = new Category(3, "AI");
-                Category dataStructures = new Category(4, "Data Structures");
-                Category algorithms = new Category(5, "Algorithms");
+                Category programming = new Category(1, "Programming", R.drawable.programming);
+                Category computerScience = new Category(2, "Computer Science",R.drawable.cs);
+                Category artificialIntelligence = new Category(3, "AI",R.drawable.ai);
+                Category dataStructures = new Category(4, "Data Structures",R.drawable.ds);
+                Category algorithms = new Category(5, "Algorithms",R.drawable.algo);
 
                 categoryDao.insertAll(Arrays.asList(programming, computerScience, artificialIntelligence, dataStructures, algorithms));
                 Log.d(TAG, "Inserted categories: " + categoryDao.getAllCategoriesSync().size());

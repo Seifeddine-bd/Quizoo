@@ -97,7 +97,7 @@ public class QuizRepository {
                 if (response.isSuccessful() && response.body() != null) {
                     List<Category> categories = new ArrayList<>();
                     for (NetworkCategory networkCategory : response.body()) {
-                        categories.add(new Category(networkCategory.getId(), networkCategory.getName()));
+                        categories.add(new Category(networkCategory.getId(), networkCategory.getName(),networkCategory.getCategoryImage()));
                     }
                     executorService.execute(() -> categoryDao.insertAll(categories));
                     fetchQuizzes();

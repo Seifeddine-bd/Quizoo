@@ -3,10 +3,19 @@ package com.seifeddine.bd.quizoo.data.remote.dto;
 public class NetworkCategory {
     private int id;
     private String name;
-
-    public NetworkCategory(int id, String name) {
+    private int categoryImage;
+    public NetworkCategory(int id, String name, int categoryImage) {
         this.id = id;
         this.name = name;
+        this.categoryImage = categoryImage;
+    }
+
+    public int getCategoryImage() {
+        return categoryImage;
+    }
+
+    public void setCategoryImage(int categoryImage) {
+        this.categoryImage = categoryImage;
     }
 
     public int getId() {

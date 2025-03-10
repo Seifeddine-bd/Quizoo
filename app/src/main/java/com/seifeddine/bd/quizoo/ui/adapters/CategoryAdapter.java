@@ -31,9 +31,9 @@ public class CategoryAdapter extends RecyclerView.Adapter<CategoryAdapter.Catego
     public CategoryAdapter(OnCategoryClickListener listener) {
         this.listener = listener;
         // Initialize icon map (example)
-        categoryIconMap = Map.of(
-                1, R.drawable.ic_launcher_background, // Replace with actual drawable
-                2, R.drawable.ic_launcher_background  // Replace with actual drawable
+         categoryIconMap = Map.of(
+                1, R.drawable.programming, // Replace with actual drawable
+                2, R.drawable.cs  // Replace with actual drawable
         );
     }
 
@@ -53,10 +53,10 @@ public class CategoryAdapter extends RecyclerView.Adapter<CategoryAdapter.Catego
     public void onBindViewHolder(@NonNull CategoryViewHolder holder, int position) {
         Category category = categories.get(position);
         holder.categoryName.setText(category.getName());
-        holder.categoryLogo.setImageResource(categoryIconMap.getOrDefault(category.getId(), R.drawable.ic_arrow_right));
+        holder.categoryLogo.setImageResource(categoryIconMap.getOrDefault(category.getId(), category.getCategoryImage()));
         holder.itemView.setOnClickListener(v -> listener.onCategoryClick(category));
         Glide.with(holder.categoryLogo.getContext())
-                .load(categoryIconMap.getOrDefault(category.getId(), R.drawable.ic_category_default))
+                .load(categoryIconMap.getOrDefault(category.getId(), category.getCategoryImage()))
                 .into(holder.categoryLogo);
     }
 
