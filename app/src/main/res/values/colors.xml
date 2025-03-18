@@ -17,6 +17,7 @@
     <!-- Feedback colors -->
     <color name="successColor">#FF4CAF50</color> <!-- Green for correct answers -->
     <color name="errorColor">#FFF44336</color> <!-- Red for incorrect answers -->
+    <color name="gold">#FFD700</color> <!-- Red for incorrect answers -->
 
     <!-- Accent colors -->
     <color name="accentColor">#FFFFC107</color> <!-- Amber for highlights -->

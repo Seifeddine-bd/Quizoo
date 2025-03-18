@@ -31,6 +31,8 @@ public class QuizFragment extends Fragment {
     private int categoryId;
     private int currentQuizIndex = 0;
     private int selectedAnswer = -1;
+    private int correctAnswers = 0;
+    private long totalTime = 0;
     private long startTime;
     private List<Quiz> quizzes;
     private ProgressBar progressBar;
@@ -100,7 +102,7 @@ public class QuizFragment extends Fragment {
             submitButton.setVisibility(View.GONE);
             optionsGroup.setEnabled(false);
         });
-
+/*
         nextQuizButton.setOnClickListener(v -> {
             currentQuizIndex++;
             if (currentQuizIndex < quizzes.size()) {
@@ -112,10 +114,70 @@ public class QuizFragment extends Fragment {
                 optionsGroup.setEnabled(true);
                 selectedAnswer = -1;
             } else {
-                Toast.makeText(getContext(), "No more quizzes in this category", Toast.LENGTH_SHORT).show();
+                //Toast.makeText(getContext(), "No more quizzes in this category", Toast.LENGTH_SHORT).show();
                 nextQuizButton.setVisibility(View.GONE);
+                // All quizzes completed, navigate to reward screen
+
+
+                // Calculate score from repository analytics data
+                for (Quiz quiz : quizzes) {
+                    // You'll need to retrieve analytics data for each quiz
+                    // This is simplified - implement with actual repository call
+                    repository.getAnalyticsByQuizId(quiz.getId()).observe(getViewLifecycleOwner(), analytics -> {
+                        if (analytics != null) {
+                            if (analytics.getSelectedAnswer().equals(
+                                    quiz.getOptions().get(quiz.getCorrectAnswerIndex()))) {
+                                correctAnswers++;
+                            }
+                            totalTime += analytics.getTimeTaken();
+                        }
+                    });
+                }
+
+                long averageTime = totalTime / quizzes.size();
+
+                // Navigate to reward fragment
+                Bundle args = new Bundle();
+                args.putInt("correctAnswers", correctAnswers);
+                args.putInt("totalQuestions", quizzes.size());
+                args.putLong("averageTime", averageTime);
+                args.putString("categoryName", repository.getCategories().getValue().get(categoryId).getName());
+
+                Navigation.findNavController(v).navigate(
+                        R.id.action_quizFragment_to_rewardFragment, args);
+
             }
         });
+*/
+
+nextQuizButton.setOnClickListener(v -> {
+    // Add null check before accessing the quizzes list
+    if (quizzes == null) {
+        Toast.makeText(getContext(), "Quiz data not available", Toast.LENGTH_SHORT).show();
+        return;
+    }
+
+    currentQuizIndex++;
+    if (currentQuizIndex < quizzes.size()) {
+        updateProgress();
+        displayQuiz(quizzes.get(currentQuizIndex), questionText, optionsGroup, submitButton, nextQuizButton, resultText);
+        resultText.setVisibility(View.GONE);
+        nextQuizButton.setVisibility(View.GONE);
+        submitButton.setVisibility(View.VISIBLE);
+        optionsGroup.setEnabled(true);
+        selectedAnswer = -1;
+    } else {
+        // All quizzes completed, navigate to reward screen
+        Bundle args = new Bundle();
+        args.putInt("correctAnswers", correctAnswers);
+        args.putInt("totalQuestions", quizzes.size());
+        args.putString("categoryName", "this category"); // Replace with actual category name
+
+        // Navigate to reward fragment
+        Navigation.findNavController(v).navigate(
+                R.id.action_quizFragment_to_rewardFragment, args);
+    }
+});
 
         backToMainButton.setOnClickListener(v -> {
             Navigation.findNavController(v).navigate(R.id.action_quizFragment_to_mainFragment);
