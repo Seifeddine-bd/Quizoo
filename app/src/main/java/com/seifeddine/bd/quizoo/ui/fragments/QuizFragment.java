@@ -1,6 +1,7 @@
 package com.seifeddine.bd.quizoo.ui.fragments;
 
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -18,6 +19,7 @@ import com.google.android.material.button.MaterialButton;
 import com.google.android.material.snackbar.Snackbar;
 import com.seifeddine.bd.quizoo.R;
 import com.seifeddine.bd.quizoo.data.local.AppDatabase;
+import com.seifeddine.bd.quizoo.data.local.entity.Category;
 import com.seifeddine.bd.quizoo.data.local.entity.Quiz;
 import com.seifeddine.bd.quizoo.data.remote.RetrofitClient;
 import com.seifeddine.bd.quizoo.data.repository.QuizRepository;
@@ -32,12 +34,12 @@ public class QuizFragment extends Fragment {
     private int currentQuizIndex = 0;
     private int selectedAnswer = -1;
     private int correctAnswers = 0;
-    private long totalTime = 0;
+    private long totalTimeTaken = 0; // Track total time for all quizzes
     private long startTime;
     private List<Quiz> quizzes;
     private ProgressBar progressBar;
     private TextView progressText;
-
+    private List<Category> categoriesList;
     public QuizFragment() {
         // Required empty public constructor
     }
@@ -70,6 +72,12 @@ public class QuizFragment extends Fragment {
                 RetrofitClient.getApiService()
         );
 
+        // Add this after repository initialization
+        repository.getCategories().observe(getViewLifecycleOwner(), categories -> {
+            if (categories != null) {
+                this.categoriesList = categories;
+            }
+        });
         loadingProgress.setVisibility(View.VISIBLE);
         repository.getQuizzesByCategory(categoryId).observe(getViewLifecycleOwner(), quizzes -> {
             loadingProgress.setVisibility(View.GONE);
@@ -87,10 +95,17 @@ public class QuizFragment extends Fragment {
                 Toast.makeText(getContext(), "Please select an answer", Toast.LENGTH_SHORT).show();
                 return;
             }
+
+
             long timeTaken = System.currentTimeMillis() - startTime;
+            totalTimeTaken +=  timeTaken;
             Quiz quiz = quizzes.get(currentQuizIndex);
             int correctAnswer = quiz.getCorrectAnswerIndex();
             boolean isCorrect = selectedAnswer == correctAnswer;
+            // Update correctAnswers when the answer is correct
+            if (isCorrect) {
+                correctAnswers++;
+            }
             String result = isCorrect ? "Correct!" : "Incorrect. The correct answer is: " + quiz.getOptions().get(correctAnswer);
             resultText.setText(result);
             resultText.setVisibility(View.VISIBLE);
@@ -167,11 +182,25 @@ nextQuizButton.setOnClickListener(v -> {
         optionsGroup.setEnabled(true);
         selectedAnswer = -1;
     } else {
-        // All quizzes completed, navigate to reward screen
+        // Get category name from repository (safely)
+        String categoryName = "this category";
+        if (categoriesList != null) {
+            for (Category category : categoriesList) {
+                if (category.getId() == categoryId) {
+                    categoryName = category.getName();
+                    break;
+                }
+            }
+        }
+
+
+
+        // Navigate to reward fragment with proper data
         Bundle args = new Bundle();
         args.putInt("correctAnswers", correctAnswers);
+        args.putLong("timeTaken",  totalTimeTaken );
         args.putInt("totalQuestions", quizzes.size());
-        args.putString("categoryName", "this category"); // Replace with actual category name
+        args.putString("categoryName", categoryName);
 
         // Navigate to reward fragment
         Navigation.findNavController(v).navigate(

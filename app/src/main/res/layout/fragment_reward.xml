@@ -5,6 +5,14 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/backgroundDark">
+    <FrameLayout
+        android:id="@+id/confetti_container"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
 
     <com.google.android.material.card.MaterialCardView
         android:id="@+id/reward_card"
@@ -31,7 +39,7 @@
                 android:layout_height="wrap_content"
                 android:text="Congratulations!"
                 android:textAppearance="@style/TextAppearance.MaterialComponents.Headline5"
-                android:textColor="@color/material_dynamic_neutral0"
+                android:textColor="@color/gold"
                 android:textStyle="bold"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
@@ -45,6 +53,7 @@
                 android:text="You've completed all quizzes in this category"
                 android:textAlignment="center"
                 android:textAppearance="@style/TextAppearance.MaterialComponents.Body1"
+                android:textColor="@color/gold"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/congrats_text" />
@@ -55,12 +64,12 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="32dp"
                 android:progress="75"
-                app:indicatorColor="@color/successColor"
+                app:indicatorColor="@color/gold"
                 app:indicatorSize="160dp"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/completion_text"
-                app:trackColor="@color/accentColor"
+                app:trackColor="@color/surface"
                 app:trackThickness="8dp" />
 
             <TextView
@@ -83,6 +92,7 @@
                 android:layout_marginTop="16dp"
                 android:text="You got 3 out of 4 questions correct!"
                 android:textAppearance="@style/TextAppearance.MaterialComponents.Body1"
+                android:textColor="@color/gold"
                 android:textStyle="bold"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
@@ -95,6 +105,7 @@
                 android:layout_marginTop="8dp"
                 android:text="Average time per question: 15 seconds"
                 android:textAppearance="@style/TextAppearance.MaterialComponents.Body2"
+                android:textColor="@color/gold"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/score_details" />
@@ -117,10 +128,11 @@
         android:id="@+id/trophy_image"
         android:layout_width="80dp"
         android:layout_height="80dp"
+        android:layout_marginBottom="16dp"
         android:src="@drawable/ic_trophy"
         app:layout_constraintBottom_toTopOf="@+id/reward_card"
         app:layout_constraintEnd_toEndOf="@+id/reward_card"
         app:layout_constraintStart_toStartOf="@+id/reward_card"
-        app:layout_constraintTop_toTopOf="@+id/reward_card"
         app:tint="@color/gold" />
+
 </androidx.constraintlayout.widget.ConstraintLayout>
