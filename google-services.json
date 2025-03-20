@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "89813704503",
+    "project_id": "quizoo-dac9c",
+    "storage_bucket": "quizoo-dac9c.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:89813704503:android:8ca2df23cd882978fe44b2",
+        "android_client_info": {
+          "package_name": "com.seifeddine.bd.quizoo"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDjSq7y9siYzAdrp3gtgoC61cu2vp5ci5Y"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

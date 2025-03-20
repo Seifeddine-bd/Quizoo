@@ -16,7 +16,8 @@ import androidx.navigation.Navigation;
 import androidx.navigation.fragment.NavHostFragment;
 import androidx.navigation.ui.AppBarConfiguration;
 import androidx.navigation.ui.NavigationUI;
-
+import com.google.firebase.auth.FirebaseAuth;
+import com.seifeddine.bd.quizoo.data.repository.UserRepository;
 import com.google.android.material.navigation.NavigationView;
 import com.seifeddine.bd.quizoo.R;
 import com.seifeddine.bd.quizoo.data.local.AppDatabase;
@@ -74,7 +75,7 @@ public class QuizActivity extends AppCompatActivity implements NavigationView.On
                 .build();
 
         NavigationUI.setupActionBarWithNavController(this, navController, appBarConfiguration);
-        NavigationUI.setupWithNavController(navigationView, navController);
+       // NavigationUI.setupWithNavController(navigationView, navController);
 
         // Initial navigation if categoryId is provided
         if (savedInstanceState == null) {
@@ -96,6 +97,29 @@ public class QuizActivity extends AppCompatActivity implements NavigationView.On
             navController.navigate(R.id.categoriesFragment);
         } else if (id == R.id.resultsFragment) {
             navController.navigate(R.id.resultsFragment);
+        } else if (id == R.id.action_logout) {
+            try {
+                // Log for debugging
+                Toast.makeText(this, "Logging out...", Toast.LENGTH_SHORT).show();
+
+                // Sign out from Firebase
+                FirebaseAuth.getInstance().signOut();
+
+                // Clear repository data if needed
+                if (UserRepository.getInstance() != null) {
+                    UserRepository.getInstance().signOut();
+                }
+
+                // Navigate to login with flags to clear stack
+                Intent intent = new Intent(QuizActivity.this, LoginActivity.class);
+                intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+                startActivity(intent);
+                finish();
+            } catch (Exception e) {
+                Toast.makeText(this, "Logout error: " + e.getMessage(), Toast.LENGTH_LONG).show();
+                e.printStackTrace();
+            }
+            return true;
         }
         drawerLayout.closeDrawer(GravityCompat.START);
         return true;
