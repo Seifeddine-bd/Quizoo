@@ -1,7 +1,7 @@
 # Quizoo
 
 ## Overview
-Quizoo is an Android application that allows users to take quizzes, explore categories, and track their performance. Designed for educational purposes, Quizoo provides an engaging platform for learning through interactive quizzes.
+**Quizoo** is an Android application that allows users to take quizzes, explore categories, and track their performance. Designed for educational purposes, Quizoo provides an engaging platform for learning through interactive quizzes.
 
 ### Purpose
 To provide an interactive quiz-taking experience for users.
@@ -10,14 +10,33 @@ To provide an interactive quiz-taking experience for users.
 Students, educators, and quiz enthusiasts.
 
 ### Platform
-Android (Minimum SDK 29).
+Android (Minimum SDK 29)
 
-## Features
+---
+
+## 📸 Screenshots
+
+| Categories | Quiz Page | Rewards |
+|-----------|------------|---------|
+| ![Categories](categories.png) | ![Quiz Page](quiz_page.png) | ![Reward](reward.png) |
+
+| Additional |
+|------------|
+| ![App Screenshot](Screenshot_20250509_235139.png) |
+
+---
+
+## ✨ Features
+
 - **Browse Categories**: Explore quizzes organized by categories (e.g., Programming, Data Structures, AI).
 - **Take Quizzes**: Answer multiple-choice questions and get instant feedback on your performance.
 - **Track Progress**: View your quiz history and performance analytics.
 - **Offline Mode**: Cache quizzes for offline access (requires initial sync).
 - **User Authentication**: Log in to save progress and access personalized content.
+
+---
+
+
 
 ## Project Structure
 ```
